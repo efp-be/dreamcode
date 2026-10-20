@@ -1,6 +1,12 @@
-.service-cards, .team-cards {
+.service-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-block);
+}
+
+.team-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-block);
 }
 
