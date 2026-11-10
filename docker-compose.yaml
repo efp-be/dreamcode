@@ -6,6 +6,7 @@ services:
       - 127.0.0.1:9000:80
     volumes:
       - ./:/var/www/html:ro
+      - ./.msmtprc:/etc/msmtprc:ro
     environment:
       CONTACT_TO: ${CONTACT_TO:-contact@web2risk.test}
       CONTACT_FROM: ${CONTACT_FROM:-noreply@web2risk.test}

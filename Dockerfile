@@ -2,7 +2,7 @@ FROM php:8.2-apache
 
 # msmtp acts as "sendmail" for PHP: mail() forwards messages to Mailpit
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends msmtp \
+    && apt-get install -y --no-install-recommends msmtp ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Mail server host: "mailpit" with docker compose, overridable at build time
