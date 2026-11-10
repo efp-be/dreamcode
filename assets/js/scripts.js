@@ -1,3 +1,4 @@
+
 /**
  * Handle mail sending
  *
@@ -9,6 +10,9 @@ const sendMail = async (name, email, message) => {
 	const container = document.querySelector(".contact .status");
 	const form = document.getElementById("contact-form");
 	const button = document.getElementById("form-trigger");
+
+	const controller = new AbortController();
+	const timeoutId = setTimeout(() => controller.abort(), 10000);
 
 	button.disabled = true;
 
@@ -23,7 +27,12 @@ const sendMail = async (name, email, message) => {
 				email,
 				message,
 			}),
+			signal: controller.signal,
 		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error: ${response.status}`);
+		}
 
 		const data = await response.json();
 
@@ -34,45 +43,20 @@ const sendMail = async (name, email, message) => {
 		if (data.status === "success") {
 			form.reset();
 		}
-	} catch {
+
+	} catch (error) {
 		container.className = "status error";
-		container.textContent = "Your message could not be sent. Please try again later.";
+
+		if (error.name === "AbortError") {
+			container.textContent = "The request timed out. Please try again.";
+		} else {
+			container.textContent = "Your message could not be sent. Please try again later.";
+		}
+
+		console.error("Mail sending error:", error);
+
 	} finally {
+		clearTimeout(timeoutId);
 		button.disabled = false;
 	}
 };
-
-/**
- * Bind events listeners when DOM is loaded
- */
-document.addEventListener("DOMContentLoaded", () => {
-	const burger = document.querySelector(".burger");
-	const navLinks = document.querySelector(".nav-links");
-	const contactForm = document.getElementById("contact-form");
-
-	burger.addEventListener("click", () => {
-		navLinks.classList.toggle("nav-active");
-		burger.classList.toggle("toggle");
-	});
-
-	navLinks.addEventListener("click", (e) => {
-		if (e.target.tagName === "A") {
-			e.preventDefault();
-
-			const targetId = e.target.getAttribute("href");
-			const targetSection = document.querySelector(targetId);
-
-			targetSection?.scrollIntoView({ behavior: "smooth" });
-
-			if (navLinks.classList.contains("nav-active")) {
-				navLinks.classList.remove("nav-active");
-				burger.classList.remove("toggle");
-			}
-		}
-	});
-
-	contactForm.addEventListener("submit", (event) => {
-		event.preventDefault();
-		sendMail(event.target[0].value, event.target[1].value, event.target[2].value);
-	});
-});
