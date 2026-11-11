@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit settings for this agency.
+# CodeRabbit reviews like a senior colleague: it explains, it doesn't code for you.
+# Its approval never replaces the review of a team member.
+
+language: en-US
+tone_instructions: >-
+  You review code written by beginner web developers in training. Be kind and
+  concrete. Explain why something matters, link to MDN when useful, and let the
+  author write the fix.
+
+reviews:
+  profile: chill
+  high_level_summary: true
+  # Keep the walkthrough short and focused on the code
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  # Reviewers are assigned by the team settings
+  suggested_reviewers: false
+  poem: false
+  in_progress_fortune: false
+  # No ready-made prompts to paste into an AI assistant
+  enable_prompt_for_ai_agents: false
+  auto_review:
+    enabled: true
+    drafts: false
+  # CodeRabbit must not write code in the repository
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+    autofix:
+      enabled: false
+    fix_ci:
+      enabled: false
+    resolve_merge_conflict:
+      enabled: false
+  path_instructions:
+    - path: "**/*"
+      instructions: |
+        The authors are beginners. Each pull request should match one ticket of
+        BACKLOG.md: check the "You're done when" criteria of that ticket, and
+        flag changes that have nothing to do with it.
+        Do not rewrite whole blocks of code. Point to the line, explain the
+        problem and the concept behind it, and give at most a short hint.
+    - path: "**/*.html"
+      instructions: |
+        Check semantic HTML and accessibility: real buttons and links, alt
+        texts, labels on form fields, heading order.
+    - path: "**/*.css"
+      instructions: |
+        The site has a small design system (CSS variables for colors, spacings
+        and text sizes). Flag hard-coded values that should use a variable.
+    - path: "**/*.js"
+      instructions: |
+        Check that the DOM elements used by the script exist, that events are
+        bound once, and that textContent is used instead of innerHTML for text.
+    - path: "**/*.php"
+      instructions: |
+        Check input validation and error handling. Never suggest showing PHP
+        errors to the visitor.
+
+chat:
+  art: false
