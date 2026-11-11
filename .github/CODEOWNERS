@@ -1,3 +1,5 @@
-# The tech lead reviews every pull request.
-# Replace @tech-lead with the tech lead's GitHub username.
-* @KandaPilouf
+# The whole team owns the code: an approval from any team member is enough.
+# GitHub can't let authors approve their own pull request, so a single owner
+# would block the tech lead's own pull requests.
+# Reviewers are assigned automatically, in turn, by the team settings.
+* @efp-be/dreamcode
