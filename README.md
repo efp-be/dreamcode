@@ -21,12 +21,48 @@ Without Docker, the pages can be opened with any local server (e.g. Live Server)
 
 By default, emails are caught by Mailpit. To send them through a real SMTP server:
 
-- Copy *.msmtprc.example* to *.msmtprc* and fill in your SMTP server and account
-- Copy *docker-compose.override.yaml.example* to *docker-compose.override.yaml*
-- In *.env*, set `CONTACT_TO` to your real inbox and `CONTACT_FROM` to the address of the SMTP account
-- Run `docker compose up -d` again
+1. Create **.msmtprc** (copy *.msmtprc.example*) with your SMTP account:
+
+```
+account default
+host smtp.gmail.com
+port 587
+tls on
+tls_starttls on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+auth on
+user your.address@gmail.com
+password your-app-password
+from your.address@gmail.com
+```
+
+2. Create **docker-compose.override.yaml** (copy *docker-compose.override.yaml.example*) so the container uses that file:
+
+```yaml
+services:
+  http:
+    volumes:
+      - ./.msmtprc:/etc/msmtprc:ro
+```
+
+3. Create or edit **.env** (copy *.env.example*): `CONTACT_TO` is the inbox that receives the messages, `CONTACT_FROM` must be the SMTP account address:
+
+```
+CONTACT_TO=your.inbox@example.com
+CONTACT_FROM=your.address@gmail.com
+```
+
+4. Run `docker compose up -d --build`
 
 To go back to Mailpit, remove *docker-compose.override.yaml* and run `docker compose up -d` again. The three files are ignored by git: never commit them, they contain your credentials.
+
+**Gmail:** use `smtp.gmail.com`, port `587`, and a Google [App Password](https://myaccount.google.com/apppasswords) (requires 2-step verification) as `password`. Your normal account password is rejected.
+
+**Troubleshooting:** the form shows an error when `POST /mail.php` returns 500. Run `docker compose logs http` to see the msmtp message:
+
+- `TLS certificate verification failed ... issuer is unknown`: an antivirus (e.g. Avast Mail Shield) is intercepting the SMTP connection. Disable its email/SSL scanning, or for local dev only add `tls_certcheck off` to *.msmtprc* (insecure).
+- `authentication failed`: the password is not a valid App Password.
+- After changing the *Dockerfile*, rebuild with `docker compose up -d --build`.
 
 ## Code sample
 
