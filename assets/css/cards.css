@@ -28,6 +28,16 @@
 		transform: translateY(-4px);
 		box-shadow: 0 12px 24px rgba(49, 54, 56, 0.15);
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		img {
+			transition: none;
+		}
+
+		&:hover img {
+			transform: none;
+		}
+	}
 }
 
 .team-cards .card img {
