@@ -15,7 +15,8 @@
 }
 
 .contact .status:empty {
-	display: none;
+	margin: 0;
+	padding: 0;
 }
 
 .contact .status.error {
