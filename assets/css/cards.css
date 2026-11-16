@@ -36,19 +36,19 @@
 }
 
 .card-content {
-	padding-top: 24px;
+	padding-top: var(--space-block);
 
 	&::before {
 		content: "";
 		display: block;
 		width: 40px;
 		height: 3px;
-		margin-bottom: 16px;
+		margin-bottom: var(--space-block);
 		background: var(--sky-blue);
 	}
 
 	p.card-intro {
-		margin-bottom: 12px;
+		margin-bottom: var(--space-text);
 		font-size: 0.875rem;
 		font-weight: 600;
 		text-transform: uppercase;
@@ -64,7 +64,7 @@
 }
 
 .card h3 {
-	margin: 0 0 8px 0;
+	margin: var(--space-text) 0;
 	font-weight: 700;
 	line-height: 1.2;
 }
